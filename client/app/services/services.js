@@ -1,11 +1,15 @@
 angular.module('Evently.Services', [])
-.factory('Events', function($http){
-  // Get all scheduled events
-  console.log('Inside Events');
+
+.factory('Events', function($http, $window){
   var getAll = function(){
     return $http({
       method: 'GET',
-      url: '/event/',
+      url: '/api/event/',
+      headers: {
+        Authorization: function(){
+          return $window.localStorage['token'];
+        }
+      }
     })
     .then(function(res){
       return res.data;
@@ -15,7 +19,12 @@ angular.module('Evently.Services', [])
   var getOne = function(id){
     return $http({
       method: 'GET',
-      url: '/event/'
+      url: '/api/event/',
+      headers: {
+        Authorization: function(){
+          return $window.localStorage['token'];
+        }
+      }
     })
     .then(function(res){
       console.log('Get One res:', res);
@@ -27,12 +36,17 @@ angular.module('Evently.Services', [])
     console.log('NewEvent : ', event);
     return $http({
       method: 'POST',
-      url: '/event/',
-      data: event
+      url: '/api/event/',
+      data: event,
+      headers: {
+        Authorization: function(){
+          return $window.localStorage['token'];
+        }
+      }
     })
     .then(function(res){
-      console.log('New Event res:', res);
-      
+      window.alert("Event successfully created!");
+      return res.data;
     });
   };
 
@@ -40,7 +54,12 @@ angular.module('Evently.Services', [])
     console.log('DeleteEvent: ', id);
     return $http({
       method: 'DELETE',
-      url: '/event/'+ id,
+      url: '/api/event/'+ id,
+      headers: {
+        Authorization: function(){
+          return $window.localStorage['token'];
+        }
+      }
     })
       .then(function(res){
         return res.data;
@@ -52,7 +71,7 @@ angular.module('Evently.Services', [])
     var request = '/api/70ba34089d4744a1/forecast10day/q/' + zip + '.json';
     return $http({
       method: 'GET',
-      url: 'http://api.wunderground.com' + request
+      url: 'https://api.wunderground.com' + request
     })
     .then(function successCallback(res) {
       callback(res.data);
