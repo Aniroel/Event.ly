@@ -37,6 +37,3 @@ bower_components
 .DS_Store
 
 server/db/*.db
-
-
-
